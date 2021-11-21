@@ -2,15 +2,7 @@ import random
 import math
 import sys
 from termcolor import colored
-
-ROWS = 6
-COLS = 7
-
-PLAYER1 = 1
-PLAYER2 = 2
-EMPTY = 0
-
-WIN_LENGTH = 4 # how many circles in a row to win
+from constant import *
 
 def init_board():
     '''create board'''
@@ -33,9 +25,9 @@ def print_board(board):
     for row in board:
         new_row = []
         for col in range(COLS):
-            if row[col] == PLAYER1:
+            if row[col] == PLAYER:
                 new_row.append(colored('O', 'yellow'))
-            elif row[col] == PLAYER2:
+            elif row[col] == AI:
                 new_row.append(colored('O', 'red'))
             else:
                 new_row.append('.')
@@ -153,7 +145,6 @@ https://www.youtube.com/watch?v=MMLtza3CZFM
 wikipedia
 https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
 '''
-DEPTH = 5
 
 
 def get_random_move(board, player):
@@ -169,7 +160,7 @@ def get_best_move(board, player):
     scores = [0 for _ in range(COLS)]
     for col in valid_cols:
         temp_board = copy_board(board)
-        drop(PLAYER2, temp_board, col)
+        drop(AI, temp_board, col)
         score = score_position(temp_board, player)
         print(f'col {col}: {score}')
         print()
@@ -191,9 +182,9 @@ def get_best_move(board, player):
 def count_score(sub_board, player):
     '''calculate score base on pieces in sub board'''
     score = 0
-    opp_player = PLAYER1
+    opp_player = PLAYER
     if player == opp_player:
-        opp_player = PLAYER2
+        opp_player = AI
 
     # 4 in a row - has won
     if sub_board.count(player) == 4:
@@ -264,9 +255,9 @@ def is_terminal_node(board):
     '''check if board in end state -- no more valid moves / player has won'''
     if len(get_valid_col(board)) == 0:
         return True
-    if has_won(PLAYER1, board):
+    if has_won(PLAYER, board):
         return True
-    if has_won(PLAYER2, board):
+    if has_won(AI, board):
         return True
     return False
 
@@ -278,11 +269,11 @@ def minimax(board, depth, alpha, beta, maximizingPlayer):
     if depth == 0 or is_terminal:
         if is_terminal:
             # AI wins
-            if has_won(PLAYER2, board):
+            if has_won(AI, board):
                 return None, 100000000
 
             # human wins
-            elif has_won(PLAYER1, board):
+            elif has_won(PLAYER, board):
                 return None, -100000000
 
             # no valid moves
@@ -291,7 +282,7 @@ def minimax(board, depth, alpha, beta, maximizingPlayer):
 
         # depth = 0
         else:
-            return None, score_position(board, PLAYER2)
+            return None, score_position(board, AI)
 
     # maximizing -- AI
     if maximizingPlayer:
@@ -299,7 +290,7 @@ def minimax(board, depth, alpha, beta, maximizingPlayer):
         curr_col = random.choice(valid_cols)
         for col in valid_cols:
             tmp_board = copy_board(board)
-            drop(PLAYER2, tmp_board, col)
+            drop(AI, tmp_board, col)
 
             score = minimax(tmp_board, depth-1, alpha, beta, False)[1]
             if score > value:
@@ -318,7 +309,7 @@ def minimax(board, depth, alpha, beta, maximizingPlayer):
         curr_col = random.choice(valid_cols)
         for col in valid_cols:
             tmp_board = copy_board(board)
-            drop(PLAYER1, tmp_board, col)
+            drop(PLAYER, tmp_board, col)
 
             score = minimax(tmp_board, depth-1, alpha, beta, True)[1]
             if score < value:
@@ -344,11 +335,11 @@ def play():
         if turn == 1:
             # player 1 turn
             p1 = get_player_input(1, board)
-            drop(PLAYER1, board, p1)
+            drop(PLAYER, board, p1)
             print_board(board)
 
             # check if player 1 has won
-            if has_won(PLAYER1, board):
+            if has_won(PLAYER, board):
                 print(colored('Player 1', 'yellow') + ' has won!!!')
                 break
 
@@ -357,12 +348,12 @@ def play():
         else:
             # player 2 turn
             p2, minimax_score =  minimax(board, DEPTH, -math.inf, math.inf, True)
-            drop(PLAYER2, board, p2)
+            drop(AI, board, p2)
             print(f'AI chose column {p2}')
             print_board(board)
 
             # check if player 2 has won
-            if has_won(PLAYER2, board):
+            if has_won(AI, board):
                 print(colored('AI', 'red') + ' has won!!!')
                 break
 
