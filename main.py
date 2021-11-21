@@ -1,6 +1,6 @@
 import pygame
-from constant import *
 from game import Game
+from constant import *
 from connect4 import *
 
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -19,12 +19,20 @@ def main():
             # ai move
             if game.get_turn() == AI:
                 game.ai_move()
+                game.check_tie()
+                game.check_win()
 
             # mouse left click
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                mouse_coordinate = pygame.mouse.get_pos()
-                col = game.get_col_from_mouse_pos(mouse_coordinate)
-                game.drop(col)
+                if game.get_winner() or game.get_tie():
+                    game.reset()
+
+                else:
+                    mouse_coordinate = pygame.mouse.get_pos()
+                    col = game.get_col_from_mouse_pos(mouse_coordinate)
+                    game.drop(col)
+                    game.check_tie()
+                    game.check_win()
 
         game.update()
 
