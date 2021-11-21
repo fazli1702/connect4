@@ -41,7 +41,7 @@ class Game:
 
     def ai_move(self):
         ai_col, points = minimax(self.board, DEPTH, -math.inf, math.inf, True)
-        return ai_col
+        self.drop(ai_col)
 
     def update_next_turn(self):
         if self.turn == AI:
