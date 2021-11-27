@@ -1,6 +1,6 @@
 # CONNECT 4
 
-### Video demo: TODO
+### Video demo: https://youtu.be/qAlR-URkgmU
 
 This is a simple game of connect 4 where you will play against an AI.
 The AI uses the minimax algorithm with alpha-beta pruning for optimisation. The player who starts is randomly assigned. You can play either on the terminal or using a GUI. The GUI is coded using the pygame library.  

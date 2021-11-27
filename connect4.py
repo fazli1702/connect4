@@ -185,7 +185,7 @@ def count_score(sub_board, player):
 
     # opponent has 3 in sub_board & 1 empry space
     if sub_board.count(opp_player) == 3 and sub_board.count(EMPTY) == 1:
-        score -= 10
+        score -= 4
 
     return score
     
@@ -255,11 +255,11 @@ def minimax(board, depth, alpha, beta, maximizingPlayer):
         if is_terminal:
             # AI wins
             if has_won(AI, board):
-                return None, 100000000
+                return None, 100000000000000
 
             # human wins
             elif has_won(PLAYER, board):
-                return None, -100000000
+                return None, -100000000000000
 
             # no valid moves
             else:
