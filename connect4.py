@@ -132,21 +132,6 @@ def get_player_input(turn, board):
 
 # ------------------- AI -------------------------- #
 
-'''
-minimax ai resources
-
-medium aritcle
-https://medium.com/analytics-vidhya/artificial-intelligence-at-play-connect-four-minimax-algorithm-explained-3b5fc32e4a4f
-
-keith galli
-https://github.com/KeithGalli/Connect4-Python/blob/master/connect4_with_ai.py
-https://www.youtube.com/watch?v=MMLtza3CZFM
-
-wikipedia
-https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
-'''
-
-
 def get_random_move(board, player):
     '''generate random move -- for testing'''
     valid_cols = get_valid_col(board)
@@ -340,13 +325,15 @@ def play():
 
             # check if player 1 has won
             if has_won(PLAYER, board):
-                print(colored('Player 1', 'yellow') + ' has won!!!')
+                print(colored('Player', 'yellow') + ' has won!!!')
                 break
 
             turn -= 1
 
         else:
             # player 2 turn
+            # p2 = get_random_move(board, AI)
+            # p2 = get_best_move(board, AI)
             p2, minimax_score =  minimax(board, DEPTH, -math.inf, math.inf, True)
             drop(AI, board, p2)
             print(f'AI chose column {p2}')

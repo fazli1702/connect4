@@ -1,6 +1,4 @@
 import random
-from sys import displayhook
-import time
 import math
 import pygame
 from constant import *
